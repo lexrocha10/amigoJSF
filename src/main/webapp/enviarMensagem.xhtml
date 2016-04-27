@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="principal.xhtml">
+        <ui:define name="dadosBanco">
+            <f:metadata>
+                <f:viewParam name="id" value="#{mensagemBean.id}"/>
+                <f:event type="preRenderView" listener="#{mensagemBean.loadModel}" />
+            </f:metadata>
+        </ui:define>
+        <ui:define name="titulo">Enviar mensagem</ui:define>
+        <ui:define name="content">
+            <h:form id="form_mensagem_view">
+                <p:growl id="message" sticky="false" showDetail="true" life="4000"/>
+                <div class="conjunto">
+                    <p:panel>
+                        <p:panelGrid columns="2" id="panelMensagem" columnClasses="label, value" style="text-align: left;" styleClass="cadastros">
+
+
+                            <p:outputLabel value="Tipo de Mensagem: "/>
+                            <p:selectOneRadio value="#{mensagemBean.mensagem.publicaBoolean}" 
+                                              requiredMessage="Selecione um destinatário">
+                                <f:selectItem itemValue="#{true}" itemLabel="Pública"/>
+                                <f:selectItem itemValue="#{false}" itemLabel="Privada"/>
+                            </p:selectOneRadio>
+
+                            <p:outputLabel value="Título:" style="white-space: nowrap;" for="nome"/>
+                            <p:inputText  placeholder="Título da mensagem" required="true" id="nome"
+                                          requiredMessage="Informe o título"
+                                          value="#{mensagemBean.mensagem.titulo}" size="50"/>
+
+                            <p:outputLabel value="Mensagem: " for="mensagem"/>
+                            <p:inputTextarea value="#{mensagemBean.mensagem.corpoMensagem}" id="mensagem"
+                                             style="width: 95%"/>
+
+                            <p:outputLabel for="destino" value="Para: "/>
+                            <p:selectOneRadio id="destino" value="#{mensagemBean.valorRadio}"
+                                              requiredMessage="Selecione um destinatário">
+                                <f:selectItem itemValue="1" itemLabel="Grupo"/>
+                                <f:selectItem itemValue="0" itemLabel="Amigo Secreto"/>
+                                <f:ajax event="change" render="s_amigo s_grupo"/>
+                            </p:selectOneRadio>
+
+                            <p:outputLabel for="s_grupo" value="Grupo: " />
+                            <p:selectOneMenu id="s_grupo" disabled="#{mensagemBean.valorRadio == '0'}"
+                                             value="#{mensagemBean.mensagem.grupoDestino}" filter="true"
+                                             filterMatchMode="startsWith" converter="grupoConverter" effect="fade">
+                                <f:selectItem itemLabel="Selecione um grupo" itemValue="#{null}"/>
+                                <f:selectItems value="#{mensagemBean.grupos}" 
+                                               var="grupo" itemLabel="#{grupo.nome}" 
+                                               itemValue="#{grupo}"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="s_amigo" value="Amigo Secreto: " />
+                            <p:selectOneMenu id="s_amigo" disabled="#{mensagemBean.valorRadio == '1'}"
+                                             value="#{mensagemBean.mensagem.amigoDestino}" filter="true"
+                                             filterMatchMode="startsWith" converter="participanteConverter" effect="fade">
+                               <f:selectItem itemLabel="Selecione um amigo" itemValue="#{null}"/>
+                               <f:selectItems value="#{mensagemBean.participantes}" 
+                                               var="participante" itemLabel="#{participante.nome}" 
+                                               itemValue="#{participante}"/>
+                            </p:selectOneMenu>
+
+                        </p:panelGrid>
+                        <p:commandButton id="cmdAdd" value="Enviar" action="#{mensagemBean.enviar()}" update="message @form">
+                            <p:resetInput target="form_mensagem_view"/>
+                        </p:commandButton>
+                    </p:panel>
+                    <p:inputText value="#{mensagemBean.mensagem.id}" type="hidden"/>
+
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

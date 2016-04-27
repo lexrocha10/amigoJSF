@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="principal.xhtml">
+        <ui:define name="dadosBanco">
+            <f:metadata>
+                <f:viewParam name="id" value="#{sexoBean.id}"/>
+                <f:event type="preRenderView" listener="#{sexoBean.loadModel}" />
+            </f:metadata>
+        </ui:define>
+        <ui:define name="titulo">Cadastrar novo Sexo</ui:define>
+        <ui:define name="content">
+            <h:form id="form_sexo_view">
+                <div class="conjunto">
+                    <p:messages  id="messages" />
+                    <p:panelGrid columns="3" columnClasses="label, value" style="text-align: left;" styleClass="cadastros">
+                        <p:outputLabel value="Sexo:" style="white-space: nowrap;"/>
+                        <p:inputText  placeholder="Descrição do tipo de sexo" required="true" 
+                                      requiredMessage="Por favor informe o sexo"
+                                      value="#{sexoBean.sexo.descricao}" size="40"/>
+
+                        <p:commandButton id="cmdAdd" value="Incluir" action="#{sexoBean.salvar()}" update="messages @form" />
+
+                        <p:inputText value="#{sexoBean.sexo.id}" type="hidden"/>
+                    </p:panelGrid>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

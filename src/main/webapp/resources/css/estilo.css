@@ -1,0 +1,116 @@
+.ui-widget {
+    font-size: medium !important;
+}
+
+.ui-wizard-step-title { 
+    font-size: medium !important;
+}
+
+.ui-menubar,.ui-menu {
+    background: red; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(dimgray, skyblue 5%,dimgray); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(dimgray, skyblue 5%,dimgray); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(dimgray, skyblue 5%,dimgray); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(dimgray, skyblue 4%,dimgray); /* Standard syntax */
+    border: none;
+}
+
+.ui-menu-child, .ui-menu-dynamic {
+    background: gray;
+    border: none;
+}
+
+.ui-dialog-content {
+    border: none;
+}
+
+.ui-menuitem-text {
+    color: white;
+}
+
+.ui-menubar {
+    border-radius: 0
+}
+
+form {
+    background-color: silver; padding-bottom: 20px;
+    padding-top: 10px;padding-bottom: 15%;
+}
+
+.ui-datatable, .ui-panelgrid {
+    margin-left: 5%; margin-right: 5%;
+}
+
+.campoBusca.ui-panelgrid>*>tr,
+.campoBusca.ui-panelgrid>*>tr>td,
+.cadastros.ui-panelgrid>*>tr,
+.cadastros.ui-panelgrid>*>tr>td {
+    border: none;
+}
+
+.conjunto {
+    background-color: white; padding-top: 20px; padding-bottom: 20px;
+    margin-left: 8%; margin-right: 8%; border-right: 10px;
+    border-radius: 15px; position: relative;min-height: 320px;
+}
+
+.pnlBancada {
+    background-color: white;border-radius: 15px;
+    border: 0; min-height: 320px; margin-left: 8%; margin-right: 8%;
+}
+
+.titulo {
+    background-image: url("#{facesContext.externalContext.requestContextPath}/resources/image/title.png");
+    color: skyblue; font-size: 18px; padding: 10px 10px;
+}
+
+.cabecalho {
+    padding-bottom: 15px;
+    background: skyblue; /* Para browsers que não suportam gradients */
+    background: -webkit-radial-gradient(red 5%, skyblue 10%, gray 60%); /* Safari 5.1-6.0 */
+    background: -o-radial-gradient(red 5%, skyblue 10%, gray 60%); /* Opera 11.6-12.0 */
+    background: -moz-radial-gradient(red 5%, skyblue 10%, gray 60%); /* Firefox 3.6-15 */
+    background: radial-gradient(red 5%, skyblue 10%, dimgray 60%); /* Sintaxe padrão */
+}
+
+.logo img {
+    width: 320px; height: 100px;
+}
+
+#rodape {
+    position: fixed; width: 100%; background-color: gray;
+    bottom: 0; margin-top: 10px; font-size: 0.8em;
+}
+
+#rodape p {
+    color: white;
+}
+
+#painel {
+    min-height:100%; 
+    position:relative; 
+    margin: 0 auto;
+}
+
+body {
+    margin: 0;padding: 0;font-family: Helvetica, sans-serif, Verdana, Arial;
+    text-align: center; width: 100%;
+    background-image: url("#{facesContext.externalContext.requestContextPath}/resources/image/fundo.png");
+}
+
+.imgInicio {
+    background-color: white; margin-left: 8%;
+    margin-right: 8%; border-radius: 15px;
+    pointer-events: none;
+}
+
+.imgInicio img {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    width: 50%;
+    height: 50%;
+}
+
+.ui-button-text-only .ui-button-text {
+    font-size: 0.8em;
+}

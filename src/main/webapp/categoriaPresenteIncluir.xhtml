@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="principal.xhtml">
+        <ui:define name="dadosBanco">
+            <f:metadata>
+                <f:viewParam name="id" value="#{categoriaPresenteBean.id}"/>
+                <f:event type="preRenderView" listener="#{categoriaPresenteBean.loadModel}" />
+            </f:metadata>
+        </ui:define>
+        <ui:define name="titulo">Incluir Nova Categoria de Presente</ui:define>
+        <ui:define name="content">
+            <h:form id="form_categoria_view">
+                <div class="conjunto">
+                    <p:messages  id="messages" />
+                    <p:panelGrid columns="3" columnClasses="label, value" style="text-align: left;" styleClass="cadastros">
+                        <p:outputLabel value="Categoria:" style="white-space: nowrap;"/>
+                        <p:inputText  placeholder="Descrição da Categoria" required="true" 
+                                      requiredMessage="Por favor informe o nome da categoria"
+                                      value="#{categoriaPresenteBean.categoriaPresente.descricao}" size="40"/>
+
+                        <p:commandButton id="cmdAdd" value="Incluir" action="#{categoriaPresenteBean.salvar()}" update="messages @form" />
+
+                        <p:inputText value="#{categoriaPresenteBean.categoriaPresente.id}" type="hidden"/>
+                    </p:panelGrid>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="principal.xhtml">
+        <ui:define name="dadosBanco">
+            <f:metadata>
+                <f:viewParam name="id" value="#{grupoBean.id}"/>
+                <f:event type="preRenderView" listener="#{grupoBean.loadModel}" />
+            </f:metadata>
+        </ui:define>
+        <ui:define name="titulo">Criar novo Grupo</ui:define>
+        <ui:define name="content">
+            <h:form id="form_grupo_view">
+                <p:growl id="message" sticky="false" showDetail="true" life="4000"/>
+                <div class="conjunto">
+                    <p:panel>
+                        <p:panelGrid columns="2" id="panelGrupo" columnClasses="label, value" style="text-align: left;" styleClass="cadastros">
+                            <p:outputLabel value="Nome do grupo:" style="white-space: nowrap;" for="nome"/>
+                            <p:inputText  placeholder="Nome do grupo" required="true" id="nome"
+                                          requiredMessage="Informe o nome do grupo"
+                                          value="#{grupoBean.grupo.nome}" size="50"/>
+
+                            <p:outputLabel value="Data do sorteio " for="sorteio" />
+                            <p:calendar value="#{grupoBean.grupo.dataSorteio}" id="sorteio"
+                                        pattern="dd/M/yyyy" placeholder="Data do sorteio" navigator="true"
+                                        required="true" mask="true" locale="br" requiredMessage="Data do sorteio necessária" />
+
+                            <p:outputLabel value="Valores do presente:"/>
+                            <h:panelGrid columns="1" style="margin-bottom: 10px">
+                                <h:outputText id="displayRange" value="Mímimo: R$ #{grupoBean.grupo.valorMinimoPresente},00 Máximo: R$ #{grupoBean.grupo.valorMaximoPresente},00" />
+                                <p:slider for="txt6,txt7" display="displayRange" style="width: 400px" range="true" minValue="10" maxValue="300"
+                                          displayTemplate="Mímimo: {min},00 R$ Máximo: {max},00 R$" />
+                            </h:panelGrid>
+                            <h:inputHidden id="txt6" value="#{grupoBean.grupo.valorMinimoPresente}" required="true" requiredMessage="Informe o valor mínimo do presente!"/>
+                            <h:inputHidden id="txt7" value="#{grupoBean.grupo.valorMaximoPresente}" required="true" requiredMessage="Informe o valor máximo do presente!"/>
+
+                            <p:outputLabel value="Data da confraternização" for="confraternizacao" />
+                            <p:calendar value="#{grupoBean.grupo.dataConfraternizacao}" id="confraternizacao"
+                                        pattern="dd/M/yyyy" placeholder="Data da confraternização" navigator="true"
+                                        required="true" mask="true" locale="br" requiredMessage="Data do sorteio necessária" />
+
+                            <p:outputLabel for="hora" value="Horário da confraternização:" />
+                            <p:calendar id="hora" value="#{grupoBean.grupo.horaConfraternizacao}" pattern="HH:mm"
+                                        timeOnly="true" placeholder="Horário" mask="true" 
+                                        required="true" requiredMessage="Informe um horário" locale="pt_BR" size="4"/>
+
+                            <p:outputLabel value="Tipo de Grupo: " for="s_tGrupo"/>
+                            <p:selectOneMenu id="s_tGrupo"
+                                             value="#{grupoBean.grupo.tipoGrupo}" filter="true"
+                                             filterMatchMode="startsWith" required="true"
+                                             requiredMessage="Selecione o tipo do grupo"
+                                             converter="tipoGrupoConverter" effect="fade">
+                                <f:selectItem itemLabel="Selecione o tipoGrupo" itemValue="#{null}"/>
+                                <f:selectItems value="#{grupoBean.tipoGrupos}" 
+                                               var="tipoGrupo" itemLabel="#{tipoGrupo.descricao}" 
+                                               itemValue="#{tipoGrupo}"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="Observações: " for="observacao"/>
+                            <p:inputTextarea value="#{grupoBean.grupo.observacoes}" id="observacao"
+                                             style="width: 80%"/>
+                        </p:panelGrid>
+                        <p:commandButton id="cmdAdd" value="Salvar" action="#{grupoBean.salvar()}" update="message @form" />
+                        <p:commandButton id="cmdCanc" value="Cancelar" action="#{grupoBean.cancel()}" update="message" />
+                    </p:panel>
+                    <p:inputText value="#{grupoBean.grupo.id}" type="hidden"/>
+
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

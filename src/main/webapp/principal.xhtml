@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <ui:insert name="head">
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <h:outputStylesheet library="css" name="estilo.css"  />
+            <link rel="shortcut icon" href="#{facesContext.externalContext.requestContextPath}/resources/image/icone.ico" type="image/x-icon" />
+            <h:outputScript name="locale-primefaces.js" library="script" />
+            <title>Amigo Secreto: <ui:insert name="titulo"></ui:insert></title>
+        </ui:insert>
+    </h:head>
+    <style>
+        .ui-menu-list {
+            margin-left: 8%;
+        }
+    </style>
+    <h:body>
+        <div id="painel">
+            <div class="cabecalho">
+                <div class="logo" style="">
+                    <img src="#{facesContext.externalContext.requestContextPath}/resources/image/amigoSecreto.png" alt=""/>
+                </div>
+            </div>
+            <p:menubar autoDisplay="false">
+                <p:menuitem value="Início" url="index.xhtml" icon="ui-icon-home" style="color:white" />
+                <p:submenu label="Buscar" icon="ui-icon-search" style="color:white">
+                    <p:menuitem value="Grupos que Participo" url="grupoParticipoView.xhtml" style="color:white"/>
+                    <p:menuitem value="Grupos que Administro" url="grupoView.xhtml" style="color:white"/>
+                </p:submenu>
+                <p:submenu label="Incluir" icon="ui-icon-plusthick">
+                    <p:menuitem value="Categoria de Presente" url="categoriaPresenteIncluir.xhtml" style="color:white"/>
+                    <p:submenu label="Tipo" style="color:white">
+                        <p:menuitem value="Tipo de Grupo" url="tipoGrupoIncluir.xhtml" style="color:white"/>
+                    </p:submenu>
+                </p:submenu>
+                <p:submenu label="Mensagem" style="color:white">
+                    <p:menuitem value="Enviar Mensagem" url="enviarMensagem.xhtml" style="color:white"/>
+                    <p:menuitem value="Mensagens Enviadas" url="mensagensEnviadaView.xhtml" style="color:white"/>
+                    <p:menuitem value="Mensagens Recebidas" url="mensagemView.xhtml" style="color:white"/>
+                </p:submenu>
+                <p:submenu label="Presente" style="color:white">
+                    <p:menuitem value="Nova Sugestão Presente" url="sugestaoPresenteIncluir.xhtml" style="color:white"/>
+                    <p:menuitem value="Sugestões enviadas" style="white-space: nowrap; color:white" url="sugestaoPresenteView.xhtml" />
+                    <p:menuitem value="Sugestões recebidas" style="white-space: nowrap; color:white" url="sugestaoPresenteRecebidaView.xhtml" />
+                </p:submenu>
+                <p:menuitem value="Criar um Grupo" url="grupoIncluir.xhtml" style="color:white"/>
+                <ui:insert name="buscaMenu"></ui:insert>
+                <f:facet name="options">
+                    <p:commandLink rendered="#{loginBean.login.id != null}" type="button" value="Editar Perfil" 
+                                   style="color:white; margin-right: 20px; text-decoration: none"
+                                   action="#{participanteViewBean.prepararAlterarParticipante()}" immediate="true"/>
+                    <p:commandButton rendered="#{loginBean.login.id != null}" type="request" action="#{loginBean.logout}" immediate="true" value="Logout"
+                                     style="background-color: red; text-decoration: none;
+                                     padding: 2px 4px 2px 4px; border-radius: 4px; color: white"/>
+                </f:facet>
+            </p:menubar>
+            <div id="principal">
+                <div class="titulo"><ui:insert name="titulo"></ui:insert></div>
+                <ui:insert name="content"></ui:insert>
+            </div>
+            <div id="rodape">
+                <p>alexrochatsi@gmail.com   |   Estudante de Sistemas para Internet<br/>
+                    Instituto Federal de Educação, Ciência e Tecnologia do Tocantins.</p>
+            </div>
+        </div>
+    </h:body>
+</html>

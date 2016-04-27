@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="principal.xhtml">
+        <ui:define name="dadosBanco">
+            <f:metadata>
+                <f:viewParam name="id" value="#{sugestaoPresenteBean.id}"/>
+                <f:event type="preRenderView" listener="#{sugestaoPresenteBean.loadModel}" />
+            </f:metadata>
+        </ui:define>
+        <ui:define name="titulo">Nova Sugestão para Presente</ui:define>
+        <ui:define name="content">
+            <h:form id="form_sugestao_view">
+                <div class="conjunto">
+                    <p:growl id="message" sticky="false" showDetail="true" life="4000"/>
+                    <p:panelGrid columns="2" columnClasses="label, value" style="text-align: left;" styleClass="cadastros">
+                        <p:outputLabel value="Descrição do presente:" style="white-space: nowrap;"/>
+                        <p:inputText  placeholder="Sugestão de presente" required="true" 
+                                      requiredMessage="Por favor informe uma sugestão"
+                                      value="#{sugestaoPresenteBean.sugestaoPresente.descricao}" size="40"/>
+
+                        <p:outputLabel value="Link do presente:" style="white-space: nowrap;"/>
+                        <p:inputText  placeholder="link para o produto"
+                                      value="#{sugestaoPresenteBean.sugestaoPresente.link}" size="40"/>
+
+                        <p:outputLabel value="Categoria: "/>
+                        <p:selectOneMenu id="s_categoria"
+                                         value="#{sugestaoPresenteBean.sugestaoPresente.categoriaPresente}" filter="true"
+                                         filterMatchMode="startsWith"
+                                         converter="categoriaPresenteConverter" effect="fade">
+                            <f:selectItem itemLabel="Selecione uma categoria" itemValue="#{null}"/>
+                            <f:selectItems value="#{sugestaoPresenteBean.categoriasPresente}" 
+                                           var="categoria" itemLabel="#{categoria.descricao}" 
+                                           itemValue="#{categoria}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Para: "/>
+                        <p:selectOneRadio value="#{sugestaoPresenteBean.valorRadio}" required="true" 
+                                          requiredMessage="Selecione um destinatário">
+                            <f:selectItem itemValue="0" itemLabel="Amigo"/>
+                            <f:selectItem itemValue="1" itemLabel="Grupo"/>
+                            <f:ajax event="change" render="s_amigo s_grupo"/>
+                        </p:selectOneRadio>
+
+                            <p:outputLabel for="s_amigo" value="Amigo Secreto: " />
+                            <p:selectOneMenu id="s_amigo" disabled="#{sugestaoPresenteBean.valorRadio == '1'}"
+                                             value="#{sugestaoPresenteBean.sugestaoPresente.participante}" filter="true"
+                                             filterMatchMode="startsWith" converter="participanteConverter" effect="fade">
+                                <f:selectItem itemLabel="Selecione um amigo" itemValue="#{null}"/>
+                                <f:selectItems value="#{sugestaoPresenteBean.participantes}" 
+                                               var="participante" itemLabel="#{participante.nome}" 
+                                               itemValue="#{participante}"/>
+                            </p:selectOneMenu>
+                            
+                            <p:outputLabel for="s_grupo" value="Grupo: " />
+                            <p:selectOneMenu id="s_grupo" disabled="#{sugestaoPresenteBean.valorRadio == '0'}"
+                                             value="#{sugestaoPresenteBean.sugestaoPresente.grupo}" filter="true"
+                                             filterMatchMode="startsWith" converter="grupoConverter" effect="fade">
+                                <f:selectItem itemLabel="Selecione um grupo" itemValue="#{null}"/>
+                                <f:selectItems value="#{sugestaoPresenteBean.grupos}" 
+                                               var="grupo" itemLabel="#{grupo.nome}" 
+                                               itemValue="#{grupo}"/>
+                            </p:selectOneMenu>
+                    </p:panelGrid>
+
+                    <p:inputText value="#{sugestaoPresenteBean.sugestaoPresente.id}" type="hidden"/>
+                    <p:commandButton id="cmdAdd" value="Incluir" action="#{sugestaoPresenteBean.salvar()}"
+                                     update="message @form" style="margin-top: 20px" />
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

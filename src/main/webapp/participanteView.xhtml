@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="principal.xhtml">
+        <ui:define name="titulo">Participantes Cadastrados</ui:define>
+        <ui:define name="content">
+            <h:form id="form_participante_view">
+                <p:contextMenu for="participantes">
+                    <p:menuitem value="Detalhes" update="participanteDetail" icon="ui-icon-search" oncomplete="PF('participanteDialog').show()"/>
+                    <p:menuitem value="Excluir" update="participantes" icon="ui-icon-close" actionListener="#{participanteViewBean.excluirParticipante()}"/>
+                </p:contextMenu>
+                <div class="conjunto">
+                    <ui:define name="buscaMenu">
+                        <f:facet name="options">
+                            <p:inputText id="busca" value="#{participanteViewBean.valorBusca}" size="40" 
+                                         style="height: 25px; border-radius: 5px 5px 5px 5px; padding-left: 10px; font-size: 16px"/>
+                            <p:commandButton action="#{participanteViewBean.buscarParticipante()}" icon="ui-icon-search"
+                                             value="Buscar" style="font-weight: bold">
+                                <f:ajax execute="form_participante_view:busca" render="@all"/>
+                            </p:commandButton>
+                            <h:commandButton rendered="#{participanteViewBean.exibe}" 
+                                             action="#{participanteViewBean.buscarTodos()}" 
+                                             value="Todos" style="padding: 6px 10px 6px 10px; font-weight: bold">
+                                <f:ajax render="@all"/>
+                            </h:commandButton>
+                        </f:facet>
+                    </ui:define>
+                    <p:dataTable value="#{participanteViewBean.participantes}" emptyMessage="Nenhum participante encontrado!" style="margin-top: 10px"
+                                 var="participanteModel" rowKey="#{participanteModel.id}" id="participantes"
+                                 selection="#{participanteViewBean.participanteSelecionado}" selectionMode="single">
+                        <p:column headerText="ID" style="width: 8%">
+                            <h:outputText value="#{participanteModel.id}"/>
+                        </p:column>
+                        <p:column headerText="Nome" sortBy="#{participanteModel.nome}" style="width: 70%">
+                            <h:outputText value="#{participanteModel.nome}" style="white-space: nowrap;"/>
+                        </p:column>
+                        
+                        <p:column headerText="----">
+                            <p:commandButton action="#{participanteViewBean.prepararAlterarParticipante(participanteModel)}" 
+                                             value="Alterar"/>
+                        </p:column>
+
+                    </p:dataTable>
+
+                    <p:dialog header="Detalhes do Participante" widgetVar="participanteDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                        <p:outputPanel id="participanteDetail" style="text-align:center; border: none">
+                            <p:panelGrid  columns="2" rendered="#{not empty participanteViewBean.participanteSelecionado}" columnClasses="label,value">
+              
+                                <h:outputText value="Id:" />
+                                <h:outputText value="#{participanteViewBean.participanteSelecionado.id}" />
+
+                                <h:outputText value="Nome" />
+                                <h:outputText value="#{participanteViewBean.participanteSelecionado.nome}" />
+
+                                <h:outputText value="Sexo" />
+                                <h:outputText value="#{participanteViewBean.participanteSelecionado.sexo.descricao}"/>
+
+                                <h:outputText value="Telefone" />
+                                <h:outputText value="(#{participanteViewBean.participanteSelecionado.telefone.ddd})
+                                               #{participanteViewBean.participanteSelecionado.telefone.numero}" />
+                                
+                                <h:outputText value="Tipo" />
+                                <h:outputText value="#{participanteViewBean.participanteSelecionado.telefone.tipoTelefone.descricao}"/>
+                                
+                                <h:outputText value="CPF" />
+                                <h:outputText value="#{participanteViewBean.participanteSelecionado.cpf}"/>
+                                
+                                <h:outputText value="Data de Nascimento" />
+                                <h:outputText value="#{participanteViewBean.participanteSelecionado.dataNascimento}"/>
+                                
+                                <h:outputText value="Email" />
+                                <h:outputText value="#{participanteViewBean.participanteSelecionado.email}"/>
+                                
+                            </p:panelGrid>
+                        </p:outputPanel>
+                    </p:dialog>
+
+                </div>
+                <p/>
+                <center>
+                    <p:commandButton value="Novo Participante" action="#{participanteViewBean.prepararAdicionarParticipante()}"
+                                     style="padding: 6px 10px 6px 10px; font-weight: bold"/>
+                </center>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

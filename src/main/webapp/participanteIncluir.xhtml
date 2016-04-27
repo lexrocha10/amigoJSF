@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="principal.xhtml">
+        <ui:define name="dadosBanco">
+            <f:metadata>
+                <f:viewParam name="id" value="#{participanteBean.id}"/>
+                <f:event type="preRenderView" listener="#{participanteBean.loadModel}" />
+            </f:metadata>
+        </ui:define>
+        <ui:define name="titulo">Cadastrar Perfil do Participante</ui:define>
+        <ui:define name="content">
+            <h:form id="form_participante_view">
+                <p:growl id="message" sticky="false" showDetail="true" life="4000"/>
+                <div class="conjunto">
+                    <p:panel header="Informações do Participante">
+                        <p:panelGrid columns="2" id="panelParticipante" columnClasses="label, value" style="text-align: left;" styleClass="cadastros">
+                            <p:outputLabel value="Nome do participante:" style="white-space: nowrap;" for="nome"/>
+                            <p:inputText  placeholder="Nome do participante" required="true" id="nome"
+                                          requiredMessage="Informe o nome do participante"
+                                          value="#{participanteBean.participante.nome}" size="50"/>
+
+                            <p:outputLabel value="E-mail:" style="white-space: nowrap;" for="email"/>
+                            <p:inputText  placeholder="E-mail do participante" required="true" id="email"
+                                          requiredMessage="Informe um e-mail para o participante"
+                                          value="#{participanteBean.participante.email}" size="50"/>
+
+                            <p:outputLabel value="CPF:" style="white-space: nowrap;" for="cpf"/>
+                            <p:inputText  placeholder="CPF do participante" required="true" id="cpf"
+                                          requiredMessage="Preencha o CPF do participante"
+                                          value="#{participanteBean.participante.cpf}" size="15"/>
+
+                            <p:outputLabel value="Sexo: " for="s_sexo"/>
+                            <p:selectOneMenu id="s_sexo"
+                                             value="#{participanteBean.participante.sexo}" filter="true"
+                                             filterMatchMode="startsWith" required="true"
+                                             requiredMessage="Selecione o sexo do participante"
+                                             converter="sexoConverter" effect="fade">
+                                <f:selectItem itemLabel="Selecione o sexo" itemValue="#{null}"/>
+                                <f:selectItems value="#{participanteBean.sexos}" 
+                                               var="sexo" itemLabel="#{sexo.descricao}" 
+                                               itemValue="#{sexo}"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="Data Nascimento: " for="nascimento" />
+                            <p:calendar value="#{participanteBean.participante.dataNascimento}" id="nascimento" yearRange="c-120:c+0"
+                                        pattern="dd/M/yyyy" placeholder="Data de Nascimento" navigator="true"
+                                        required="true" mask="true" locale="br" requiredMessage="Data dascimento necessária" />
+
+                            <p:outputLabel value="Telefone:" style="white-space: nowrap;" for="telefone"/>
+                            <h:panelGroup>
+                                <p:inputText  placeholder="DDD" required="true" id="telefone"
+                                              requiredMessage="Informe o DDD do telefone"
+                                              value="#{participanteBean.participante.telefone.ddd}" size="3" style="margin-right: 2%"/>
+
+                                <p:inputText  placeholder="Telefone" required="true"
+                                              requiredMessage="Informe o telefone do participante"
+                                              value="#{participanteBean.participante.telefone.numero}" size="20" style="margin-right: 2%"/>
+
+                                <p:selectOneMenu id="s_tipo_telefone"
+                                                 value="#{participanteBean.participante.telefone.tipoTelefone}" filter="true"
+                                                 filterMatchMode="startsWith" required="true" requiredMessage="Informe o tipo do telefone"
+                                                 converter="tipoTelefoneConverter" effect="fade">
+                                    <f:selectItem itemLabel="Tipo telefone" itemValue="#{null}"/>
+                                    <f:selectItems value="#{participanteBean.tiposTelefone}" 
+                                                   var="t_telefone" itemLabel="#{t_telefone.descricao}" 
+                                                   itemValue="#{t_telefone}"/>
+                                </p:selectOneMenu>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                    </p:panel>
+                    <p:panel header="Endereço do Participante">
+                        <p:panelGrid columns="2" id="panelEndereco" columnClasses="label, value" style="text-align: left;" styleClass="cadastros">
+                            <p:outputLabel value="Cidade: " for="cidade" />
+                            <p:inputText value="#{participanteBean.participante.endereco.cidade}" 
+                                         placeholder="nome da cidade" required="true" id="cidade"
+                                         requiredMessage="Por favor informe a cidade" size="50"/>
+
+                            <p:outputLabel value="CEP: " style="white-space: nowrap;" for="cep" />
+                            <p:inputText value="#{participanteBean.participante.endereco.cep}" 
+                                         placeholder="cep do endereço" required="true" id="cep"
+                                         requiredMessage="Por favor informe o CEP" size="12"/>
+
+                            <p:outputLabel value="Logradouro: " style="white-space: nowrap;" for="logradouro"/>
+                            <p:inputText value="#{participanteBean.participante.endereco.logradouro}"
+                                         placeholder="logradouro do endereço" required="true" id="logradouro"
+                                         requiredMessage="Informe o logradouro" size="50"/>
+
+                            <p:outputLabel value="Bairro: " style="white-space: nowrap;" for="bairro" />
+                            <p:inputText value="#{participanteBean.participante.endereco.bairro}"
+                                         placeholder="bairro do endereço" required="true" id="bairro"
+                                         requiredMessage="Por favor informe o bairro" size="50"/>
+
+                            <p:outputLabel value="Numero: " style="white-space: nowrap;" for="numero" />
+                            <p:inputText value="#{participanteBean.participante.endereco.numero}" 
+                                         placeholder="número" required="true" id="numero"
+                                         requiredMessage="Por favor informe o número" size="5"/>
+
+                            <p:outputLabel value="Complemento: " style="white-space: nowrap;" for="complemento"/>
+                            <p:inputText value="#{participanteBean.participante.endereco.complemento}" 
+                                         placeholder="complemento" required="false" id="complemento"
+                                         requiredMessage="Por favor informe o complemento" size="30"/>
+                        </p:panelGrid>
+                        <p:commandButton value="Salvar" actionListener="#{participanteBean.salvar()}" update="message @form"/>
+                    </p:panel>
+                    <p:inputText value="#{participanteBean.participante.id}" type="hidden"/>
+
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

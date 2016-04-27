@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="principal.xhtml">
+        <ui:define name="titulo">Amigos Secretos - Grupos</ui:define>
+        <ui:define name="content">
+            <h:form id="form_grupo_view">
+                <p:growl id="message" sticky="false" showDetail="true" life="4000"/>
+                <div class="conjunto">
+                    <p:panelGrid columns="4" style="margin-left: 5%">
+                        <p:outputLabel value="Buscar por Nome " />
+                        <p:inputText id="busca" value="#{grupoViewBean.valorBusca}" />
+                        <p:commandButton action="#{grupoViewBean.buscarGrupoGeral()}"
+                                         value="Buscar" update="form_grupo_view:busca">
+                            <f:ajax execute="form_grupo_view:busca" 
+                                    render="@all"/>
+                        </p:commandButton>
+
+                        <p:commandButton rendered="#{grupoViewBean.exibe}" update="form_grupo_view:busca" 
+                                         action="#{grupoViewBean.buscarTodosGeral()}" 
+                                         value="Todos">
+                            <f:ajax render="@all"/>
+                        </p:commandButton>
+
+                    </p:panelGrid>
+                    <p:dataTable value="#{grupoViewBean.gruposGeral}" emptyMessage="Nenhum grupo encontrado!" style="margin-top: 10px"
+                                 var="grupoModel" rowKey="#{grupoModel.id}" id="grupos"
+                                 selection="#{grupoViewBean.grupoSelecionado}" selectionMode="single">
+                        
+                        <p:ajax event="rowSelect" update=":form_grupo_view:grupoDetail" oncomplete="PF('grupoDialog').show()"/>
+                        
+                        <p:column headerText="Nome" sortBy="#{grupoModel.nome}" style="width: 25%">
+                            <h:outputText value="#{grupoModel.nome}" style="white-space: nowrap;"/>
+                        </p:column>
+
+                        <p:column headerText="Administrador" sortBy="#{grupoModel.administrador.nome}" style="width: 25%">
+                            <h:outputText value="#{grupoModel.administrador.nome}" style="white-space: nowrap;"/>
+                        </p:column>
+
+                        <p:column headerText="Data do Sorteio" sortBy="#{grupoModel.dataSorteio}" style="width: 35%">
+                            <h:outputText value="#{grupoModel.dataSorteio}" style="white-space: nowrap;">
+                                <f:convertDateTime pattern="dd/MM/yyyy" locale="pt" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="----" style="width: 15%">
+                            <p:commandButton action="#{grupoBean.entrar(grupoModel)}" 
+                                             value="Entrar no Grupo"/>
+                        </p:column>
+
+                    </p:dataTable>
+
+                    <p:dialog header="Detalhes do Grupo" widgetVar="grupoDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                        <p:outputPanel id="grupoDetail" style="border: none;">
+                            <p:panelGrid  columns="2" rendered="#{not empty grupoViewBean.grupoSelecionado}" columnClasses="label,value">
+
+                                <h:outputText value="Nome:" style="font-weight: bolder; white-space: nowrap" />
+                                <h:outputText value="#{grupoViewBean.grupoSelecionado.nome}" style="white-space: nowrap" />
+
+                                <h:outputText value="Administrador:" style="font-weight: bolder; white-space: nowrap" />
+                                <h:outputText value="#{grupoViewBean.grupoSelecionado.administrador.nome}" />
+
+                                <h:outputText value="Data do Sorteio:" style="font-weight: bolder; white-space: nowrap" />
+                                <h:outputText value="#{grupoViewBean.grupoSelecionado.dataSorteio}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" locale="pt" />
+                                </h:outputText>
+
+                                <h:outputText value="Valor mínimo presente:" style="font-weight: bolder; white-space: nowrap" />
+                                <h:outputText value="R$ #{grupoViewBean.grupoSelecionado.valorMinimoPresente}0" />
+
+                                <h:outputText value="Valor máximo presente:" style="font-weight: bolder; white-space: nowrap" />
+                                <h:outputText value="R$ #{grupoViewBean.grupoSelecionado.valorMaximoPresente}0"/>
+
+                                <h:outputText value="Data confraternização:" style="font-weight: bolder; white-space: nowrap" />
+                                <h:outputText value="#{grupoViewBean.grupoSelecionado.dataConfraternizacao}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" locale="pt" />
+                                </h:outputText>
+
+                                <h:outputText value="Hora confraternização: " style="font-weight: bolder; white-space: nowrap" />
+                                <h:outputText value="#{grupoViewBean.grupoSelecionado.horaConfraternizacao}"/>
+
+                                <h:outputText value="Tipo do Grupo: " style="font-weight: bolder; white-space: nowrap" />
+                                <h:outputText value="#{grupoViewBean.grupoSelecionado.tipoGrupo.descricao}"/>
+
+                                <h:outputText value="Observações: " style="font-weight: bolder; white-space: nowrap" />
+                                <h:outputText value="#{grupoViewBean.grupoSelecionado.observacoes}"/>
+
+                            </p:panelGrid>
+                            <p:commandButton value="Participantes" type="request" >
+                                <p:ajax event="click" update=":form_grupo_view:participanteDetail" 
+                                        oncomplete="PF('participanteDialog').show()"/>
+                            </p:commandButton>
+                            
+                            <p:commandButton value="Lista de Desejos" type="request" >
+                                <p:ajax event="click" update=":form_grupo_view:sugestaoDetail" 
+                                        oncomplete="PF('sugestaoDialog').show()"/>
+                            </p:commandButton>
+                            
+                        </p:outputPanel>
+
+                    </p:dialog>
+                    <p:dialog header="Participantes do Grupo" widgetVar="participanteDialog" modal="true"
+                              showEffect="fade" hideEffect="fade" resizable="false" width="80%">
+                        <p:outputPanel id="participanteDetail" style="text-align:center; border: none;">
+                            <p:dataTable value="#{grupoViewBean.grupoSelecionado.participantes}" emptyMessage="Nenhum participante!"
+                                         var="participantesModel" rowKey="#{participantesModel.id}" id="participantes">
+                                <p:column headerText="Nome do participante:" style="width: 8%">
+                                    <h:outputText value="#{participantesModel.nome}"/>
+                                </p:column>
+
+                                <p:column headerText="Cidade:" style="width: 8%">
+                                    <h:outputText value="#{participantesModel.endereco.cidade}"/>
+                                </p:column>
+
+                            </p:dataTable>
+                        </p:outputPanel>
+                    </p:dialog>
+
+                    <p:dialog header="Sugestões para presentes do Grupo" widgetVar="sugestaoDialog" modal="true"
+                              showEffect="fade" hideEffect="fade" resizable="false" width="80%">
+                        <p:outputPanel id="sugestaoDetail" style="text-align:center; border: none;">
+                            <p:dataTable value="#{grupoViewBean.grupoSelecionado.listaDesejos}" emptyMessage="Nenhuma sugestão recebida!"
+                                         var="sugestoesModel" rowKey="#{sugestoesModel.id}" id="sugestoes">
+                                
+                                <p:column headerText="Sugerido por:" style="width: 15%">
+                                    <h:outputText value="#{sugestoesModel.participanteQueSugeriu.nome}"/>
+                                </p:column>
+
+                                <p:column headerText="Sugestão" sortBy="#{sugestoesModel.descricao}" style="width: 25%;">
+                                    <h:outputText value="#{sugestoesModel.descricao}" style="white-space: nowrap; font-size: 0.8em"/>
+                                </p:column>
+
+                                <p:column headerText="Link" style="width: 20%">
+                                    <h:outputLink value="#{sugestoesModel.link}" onclick="window.open('#{sugestoesModel.link}')"><h:outputText value="#{sugestoesModel.link}" style="font-size: 0.8em"/></h:outputLink>
+                                </p:column>
+
+                                <p:column headerText="Categoria" sortBy="#{sugestoesModel.categoriaPresente.descricao}" style="width: 15%">
+                                    <h:outputText value="#{sugestoesModel.categoriaPresente.descricao}" style="white-space: nowrap; font-size: 0.8em"/>
+                                </p:column>
+
+                            </p:dataTable>
+                        </p:outputPanel>
+                    </p:dialog>
+
+                </div>
+                <p/>
+                <center>
+                    <p:commandButton value="Novo Grupo" action="#{grupoViewBean.prepararAdicionarGrupo()}"
+                                     style="padding: 6px 10px 6px 10px; font-weight: bold"/>
+                </center>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

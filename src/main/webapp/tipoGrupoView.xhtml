@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="principal.xhtml">
+        <ui:define name="titulo">Tipos de Grupos</ui:define>
+        <ui:define name="content">
+            <h:form id="form_tipo_grupo_view">
+                <div class="conjunto">
+                    <ui:define name="buscaMenu">
+                        <f:facet name="options">
+                            <p:inputText id="busca" value="#{tipoGrupoViewBean.valorBusca}" size="40" 
+                                         style="height: 25px; border-radius: 5px 5px 5px 5px; padding-left: 10px; font-size: 16px"/>
+                            <p:commandButton action="#{tipoGrupoViewBean.buscarTipoGrupo()}" icon="ui-icon-search"
+                                             value="Buscar" style="font-weight: bold">
+                                <f:ajax execute="form_tipo_grupo_view:busca" render="@all"/>
+                            </p:commandButton>
+                            <h:commandButton rendered="#{tipoGrupoViewBean.exibe}" 
+                                             action="#{tipoGrupoViewBean.buscarTodos()}" 
+                                             value="Todos" style="padding: 6px 10px 6px 10px; font-weight: bold">
+                                <f:ajax render="@all"/>
+                            </h:commandButton>
+                        </f:facet>
+                    </ui:define>
+                    <p:dataTable value="#{tipoGrupoViewBean.tipoGrupos}" emptyMessage="Nenhuma tipo de grupo encontrado!" style="margin-top: 10px"
+                                 var="tipoGrupoModel">
+                        <p:column headerText="ID" style="width: 8%">
+                            <h:outputText value="#{tipoGrupoModel.id}"/>
+                        </p:column>
+                        <p:column headerText="Nome" sortBy="#{tipoGrupoModel.descricao}" style="width: 70%">
+                            <h:outputText value="#{tipoGrupoModel.descricao}" style="white-space: nowrap;"/>
+                        </p:column>
+                        <p:column headerText="----">
+                            <p:commandButton action="#{tipoGrupoViewBean.prepararAlterarTipoGrupo(tipoGrupoModel)}" 
+                                             value="Alterar"/>
+                        </p:column>
+                        <p:column headerText="---">
+                            <p:commandButton action="#{tipoGrupoViewBean.excluirTipoGrupo(tipoGrupoModel)}"
+                                             value="Excluir"/>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+                <p/>
+                <center>
+                    <p:commandButton value="Novo tipo de Grupo" action="#{tipoGrupoViewBean.prepararAdicionarTipoGrupo()}"
+                                     style="padding: 6px 10px 6px 10px; font-weight: bold"/>
+                </center>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

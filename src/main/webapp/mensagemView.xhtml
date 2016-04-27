@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="principal.xhtml">
+        <ui:define name="titulo">Mensagens recebidas</ui:define>
+        <ui:define name="content">
+            <h:form id="form_mensagem_view">
+                <div class="conjunto">
+                    <ui:define name="buscaMenu">
+                        <f:facet name="options">
+                            <p:inputText id="busca" value="#{mensagemViewBean.valorBusca}" size="40" 
+                                         style="height: 25px; border-radius: 5px 5px 5px 5px; padding-left: 10px; font-size: 16px"/>
+                            <p:commandButton action="#{mensagemViewBean.buscarMensagem()}" icon="ui-icon-search"
+                                             value="Buscar" style="font-weight: bold">
+                                <f:ajax execute="form_mensagem_view:busca" render="@all"/>
+                            </p:commandButton>
+                            <h:commandButton rendered="#{mensagemViewBean.exibe}" 
+                                             action="#{mensagemViewBean.buscarTodos()}" 
+                                             value="Todos" style="padding: 6px 10px 6px 10px; font-weight: bold">
+                                <f:ajax render="@all"/>
+                            </h:commandButton>
+                        </f:facet>
+                    </ui:define>
+                    <p:dataTable value="#{mensagemViewBean.minhasMensagens}" emptyMessage="Nenhuma mensagem recebida!"
+                                 var="mensagensModel" rowKey="#{mensagensModel.id}" id="mensagens">
+
+                        <p:column headerText="Data:" style="width: 15%">
+                            <h:outputText value="#{mensagensModel.dataEnvio}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Remetente:" style="width: 15%">
+                            <h:outputText rendered="#{mensagensModel.publicaBoolean == true}" value="#{mensagensModel.remetente.nome}"/>
+                            <h:outputText rendered="#{mensagensModel.publicaBoolean == false}" value="Anônimo" style="color: red"/>
+                        </p:column>
+
+                        <p:column headerText="Título:" style="width: 30%">
+                            <h:outputText value="#{mensagensModel.titulo}"/>
+                        </p:column>
+
+                        <p:column headerText="Mensagem:" style="width: 40%">
+                            <h:outputText value="#{mensagensModel.corpoMensagem}"/>
+                        </p:column>
+
+                    </p:dataTable>
+                </div>
+                <p/>
+                <center>
+                    <p:commandButton value="Novo Mensagem" action="#{mensagemViewBean.prepararAdicionarMensagem()}"
+                                     style="padding: 6px 10px 6px 10px; font-weight: bold"/>
+                </center>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

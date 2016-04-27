@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="principal.xhtml">
+        <ui:define name="titulo">Minhas sugestões para presentes recebidas</ui:define>
+        <ui:define name="content">
+            <h:form id="form_sugestao_view">
+                <p:growl id="message" sticky="false" showDetail="true" life="4000"/>
+                <div class="conjunto">
+                    <ui:define name="buscaMenu">
+                        <f:facet name="options">
+                            <p:inputText id="busca" value="#{sugestaoPresenteViewBean.valorBusca}" size="40" 
+                                         style="height: 25px; border-radius: 5px 5px 5px 5px; padding-left: 10px; font-size: 16px"/>
+                            <p:commandButton action="#{sugestaoPresenteViewBean.buscarSugestaoPresente()}" icon="ui-icon-search"
+                                             value="Buscar" style="font-weight: bold">
+                                <f:ajax execute="form_sugestao_view:busca" render="@all"/>
+                            </p:commandButton>
+                            <h:commandButton rendered="#{sugestaoPresenteViewBean.exibe}" 
+                                             action="#{sugestaoPresenteViewBean.buscarTodos()}" 
+                                             value="Todos" style="padding: 6px 10px 6px 10px; font-weight: bold">
+                                <f:ajax render="@all"/>
+                            </h:commandButton>
+                        </f:facet>
+                    </ui:define>
+                    <p:dataTable value="#{sugestaoPresenteViewBean.sugestaoPresentesRecebidas}" emptyMessage="Nenhuma sugestão encontrada!" style="margin-top: 10px"
+                                 var="sugestaoPresenteModel">
+                        <p:column headerText="ID" style="width: 4%">
+                            <h:outputText value="#{sugestaoPresenteModel.id}" style="font-size: 0.8em"/>
+                        </p:column>
+                        <p:column headerText="Sugestão" sortBy="#{sugestaoPresenteModel.descricao}" style="width: 25%;">
+                            <h:outputText value="#{sugestaoPresenteModel.descricao}" style="white-space: nowrap; font-size: 0.8em"/>
+                        </p:column>
+                        
+                        <p:column headerText="Link" style="width: 20%">
+                            <h:outputLink value="#{sugestaoPresenteModel.link}" onclick="window.open('#{sugestaoPresenteModel.link}')"><h:outputText value="#{sugestaoPresenteModel.link}" style="font-size: 0.8em"/></h:outputLink>
+                        </p:column>
+                        
+                        <p:column headerText="Categoria" sortBy="#{sugestaoPresenteModel.categoriaPresente.descricao}" style="width: 15%">
+                            <h:outputText value="#{sugestaoPresenteModel.categoriaPresente.descricao}" style="white-space: nowrap; font-size: 0.8em"/>
+                        </p:column>
+                        
+                        <p:column headerText="De" sortBy="#{sugestaoPresenteModel.participante.nome}" style="width: 20%">
+                            <h:outputText value="#{sugestaoPresenteModel.participanteQueSugeriu.nome}" style="white-space: nowrap; font-size: 0.8em"/>
+                        </p:column>
+                        
+                    </p:dataTable>
+                </div>
+                <p/>
+                <center>
+                    <p:commandButton value="Nova Sugestão" action="#{sugestaoPresenteViewBean.prepararAdicionarSugestaoPresente()}"
+                                     style="padding: 6px 10px 6px 10px; font-weight: bold"/>
+                </center>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
