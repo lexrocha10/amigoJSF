@@ -25,10 +25,7 @@ import javax.persistence.Table;
         @Table(name = "sorteio")
 public class Sorteio implements Serializable {
     @Id
-    @SequenceGenerator(name = "sorteio_id_gen",
-            sequenceName = "sorteio_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "sorteio_id_gen")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Grupo grupo;

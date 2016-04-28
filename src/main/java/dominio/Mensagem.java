@@ -36,10 +36,7 @@ import javax.persistence.Temporal;
 })
 public class Mensagem implements Serializable {
     @Id
-    @SequenceGenerator(name = "mensagem_id_gen",
-            sequenceName = "mensagem_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "mensagem_id_gen")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @Column(name = "titulo", length = 50, nullable = false)
     private String titulo;

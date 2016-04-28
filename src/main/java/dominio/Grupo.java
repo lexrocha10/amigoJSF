@@ -43,10 +43,7 @@ import javax.persistence.Temporal;
 public class Grupo implements Serializable {
 
     @Id
-    @SequenceGenerator(name = "grupo_id_gen",
-            sequenceName = "grupo_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "grupo_id_gen")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)

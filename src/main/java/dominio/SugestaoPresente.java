@@ -35,10 +35,7 @@ import javax.persistence.Table;
 })
 public class SugestaoPresente implements Serializable {
     @Id
-    @SequenceGenerator(name = "sugestao_presente_id_gen",
-            sequenceName = "sugestao_presente_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "sugestao_presente_id_gen")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String descricao;
     private String link;

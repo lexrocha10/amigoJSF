@@ -32,10 +32,7 @@ import javax.persistence.Table;
 public class Login implements Serializable {
     
     @Id
-    @SequenceGenerator(name = "tipo_login_id_gen",
-            sequenceName = "tipo_login_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "tipo_login_id_gen")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @Column(name = "usuario", length = 20, nullable = false)
     private String usuario;

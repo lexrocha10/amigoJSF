@@ -42,10 +42,7 @@ import javax.persistence.Temporal;
 public class Participante implements Serializable {
 
     @Id
-    @SequenceGenerator(name = "participante_id_gen",
-            sequenceName = "participante_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "participante_id_gen")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @Column(name = "nome", length = 100, nullable = false)
     private String nome;

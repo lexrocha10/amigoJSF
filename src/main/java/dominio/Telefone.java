@@ -20,21 +20,19 @@ import javax.persistence.Table;
  * @author Rocha
  */
 @Entity
-@Table(name="telefone")
+@Table(name = "telefone")
 public class Telefone implements Serializable {
+
     @Id
-    @SequenceGenerator(name = "telefone_id_gen",
-            sequenceName = "telefone_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "telefone_id_gen")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @Column(name = "ddd", length = 3)
     private String ddd;
     @Column(name = "numero", length = 20)
     private String numero;
-    
+
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="tipo_telefone_id")
+    @JoinColumn(name = "tipo_telefone_id")
     private TipoTelefone tipoTelefone;
 
     public String getDdd() {
@@ -68,7 +66,7 @@ public class Telefone implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 7;
@@ -93,5 +91,5 @@ public class Telefone implements Serializable {
         }
         return true;
     }
-    
+
 }
